@@ -1,0 +1,30 @@
+﻿<Window x:Class="Names.PersonView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Names"
+        mc:Ignorable="d"
+        Title="PersonView" Height="180" Width="320">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="Prénom"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="Nom"/>
+        <Label Grid.Column="0" Grid.Row="2" Content="Date de Naissance"/>
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding FirstName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  IsReadOnly="True" Width="120" HorizontalAlignment="Left"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LastName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  IsReadOnly="True" Width="120" HorizontalAlignment="Left"/>
+        <DatePicker Grid.Column="1" Grid.Row="2" Margin="5,5,0,0" Width="120" SelectedDate="{Binding BirthDate}" HorizontalAlignment="Left"/>
+        <Button Grid.Row="3" Margin="5,5,5,5" Command="{Binding CloseCommand}" Content="Close" />
+    </Grid>
+</Window>

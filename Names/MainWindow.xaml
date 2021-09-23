@@ -1,0 +1,152 @@
+﻿<Window x:Class="Names.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Names" 
+        mc:Ignorable="d"
+        Title="Names" Height="360" Width="520"
+        d:DataContext="{d:DesignInstance local:ListNameViewModel_DesignTime, IsDesignTimeCreatable=True}">
+
+    <Window.Resources>
+        <local:BoolToStringConverter x:Key="BoolToStringConverter" />
+        <local:ColorToARGB x:Key="ColorToARGB" />
+        <local:ValueMultiplier x:Key="ValueMultiplier" />
+        <local:IsInferiorConverter x:Key="IsInferiorConverter" />
+    </Window.Resources>
+    <Window.Background>
+        <Binding  Path="BrushColor" />
+    </Window.Background>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Names"/>
+        <StackPanel Grid.Column="1" >
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="btnColor1" Margin="5,0,0,0"  Width="10" Height="10" Background="Blue" ClickMode="Release" Command="{Binding ChangeBackgroundColorCommand}" CommandParameter="blue" IsEnabled="{Binding IsBlueEnabled}" />
+                <Button x:Name="btnColor2" Margin="5,0,0,0"  Width="10" Height="10" Background="Green" Command="{Binding ChangeBackgroundColorCommand}" CommandParameter="green" IsEnabled="{Binding IsGreenEnabled}" />
+                <Button x:Name="btnColor3" Margin="5,0,0,0" Width="10" Height="10" Background="Red" Command="{Binding ChangeBackgroundColorCommand}" CommandParameter="red" IsEnabled="{Binding IsRedEnabled}" />
+                <CheckBox x:Name="ChkBox1" Margin="5,0,0,0" Width="15" Height="15" Background="Blue"  IsChecked="{Binding IsBlueCheck}" />
+                <CheckBox x:Name="ChkBox2" Margin="5,0,0,0" Width="15" Height="15"  Background="Green" IsChecked="{Binding IsGreenCheck}" />
+                <CheckBox x:Name="ChkBox3" Margin="5,0,0,0" Width="15" Height="15"  Background="Red" IsChecked="{Binding IsRedCheck}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <RadioButton x:Name="RadioBtn1" GroupName="ColorRadio" Margin="5,0,0,0" Background="Red" IsChecked="{Binding IsRadioRedCheck}" />
+                <RadioButton x:Name="RadioBtn2" GroupName="ColorRadio" Margin="5,0,0,0" Background="Green" IsChecked="{Binding IsRadioGreenCheck}"/>
+                <RadioButton x:Name="RadioBtn3" GroupName="ColorRadio" Margin="5,0,0,0" Background="Blue" IsChecked="{Binding IsRadioBlueCheck}" />
+                <ComboBox x:Name="listColors" ItemsSource="{Binding ListColors}" SelectedItem="{Binding ColorSelected}" Width="120" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <ComboBoxItem Content="{Binding}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+        <ListBox ItemsSource="{Binding ListPersons}" Grid.Row="1" x:Name="lstNames" SelectedItem="{Binding ValueSelected}" SelectedIndex="{Binding IndexSelected}">
+            <!--<ListBox.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DoubleClickCommand}" />
+            </ListBox.InputBindings>-->
+            <!--<ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>-->
+            <ListBox.ItemTemplate>
+                
+                <DataTemplate>
+                    <Grid>
+                        <Grid.InputBindings>
+                            <!--<MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.DoubleClickCommand}"
+                                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ValueSelected}"/>-->
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DoubleClickCommand}"/>
+                        </Grid.InputBindings>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding FirstName}" >
+                            <TextBlock.ToolTip>
+                                <TextBlock Text="{Binding FullName}"/>
+                            </TextBlock.ToolTip>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+            <TextBox x:Name="txtName" Text="{Binding NewName, Mode=TwoWay}"/>
+            <Button x:Name="btnAdd" Margin="0,5,0,0" Command="{Binding AddButtonCommand}" Content="{Binding ButtonLabel}">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DoubleClickCommand}" />
+                </Button.InputBindings>
+            </Button>
+            <Button x:Name="btnDel" Margin="0,5,0,0" Command="{Binding DelButtonCommand}" Content="{Binding ButtonDelLabel}" />
+            <Button x:Name="btnDe2" Margin="0,5,0,0" Command="{Binding DelIndButtonCommand}" Content="{Binding ButtonDelIndLabel}" />
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                <Image Height="100" Width="114" Margin="0,10,0,0" Source="/Ressources/immpp.png" RenderTransformOrigin="0.5,0.5"
+                       Opacity="{Binding SliderValue, Converter={StaticResource ValueMultiplier}, ConverterParameter=0.01}">
+                    <!--<Image.Opacity>
+                        <Binding Converter="{StaticResource ValueMultiplier}" ConverterParameter="0.01" Path="ImageOpacity" />
+                    </Image.Opacity>-->
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <!-- Les DataTrigger s'applique a la suite, un nouveau annulant le précédent -->
+                                <DataTrigger Binding="{Binding ElementName=ImgSlider, Path=Value, Converter={StaticResource IsInferiorConverter}, ConverterParameter=80}" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="-1" ScaleY="1"/>
+                                            
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ImgSlider, Path=Value, Converter={StaticResource IsInferiorConverter}, ConverterParameter=60}" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="90"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ImgSlider, Path=Value, Converter={StaticResource IsInferiorConverter}, ConverterParameter=40}" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <SkewTransform AngleX="20" AngleY="20"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ImgSlider, Path=Value, Converter={StaticResource IsInferiorConverter}, ConverterParameter=20}" Value="True">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1" ScaleY="-1"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+
+
+                </Image>
+                <Slider Name="ImgSlider" Value="{Binding SliderValue}" 
+                        Orientation="Vertical" Maximum="100" 
+                        Height="78" Width="32" VerticalAlignment="Stretch" Margin="3,0,0,0"  
+                        />
+            </StackPanel>
+
+
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="cadeau-noel.jpg" />
+    <None Remove="Ressources\immpp.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ListName\ListName.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="cadeau-noel.jpg" />
+    <Resource Include="Ressources\immpp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
