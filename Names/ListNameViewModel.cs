@@ -255,9 +255,9 @@ namespace Names
         #endregion
 
         #region Labels
-        public string ButtonLabel => "Add Name";
-        public string ButtonDelLabel => "Remove Name";
-        public string ButtonDelIndLabel => "Remove Name at Index";
+        public string ButtonLabel => "Add Person";
+        public string ButtonDelLabel => "Remove Person";
+        public string ButtonDelIndLabel => "Remove Person at Index";
         public string ButtonColorLabel1 => "Red";
         public string ButtonColorLabel2 => "Green";
         public string ButtonColorLabel3 => "Blue";
@@ -270,7 +270,7 @@ namespace Names
         public RelayCommand DelIndButtonCommand { get; }
         public RelayCommand ChangeBackgroundColorCommand { get; }
         //public RelayCommand DoubleClickCommand { get; }
-        
+
         #endregion
 
         // Pour refresh l'affichage de l'UI
@@ -281,7 +281,7 @@ namespace Names
         // parameter causes the property name of the caller to be substituted as an argument.
 
         public List<Person> List => new List<Person> { new Person("Nono", "Mitsuyo", new DateTime(2000, 12, 24)), new Person("Niko"), new Person("Jean") };
-       //public List<string> ListS => new List<string> { "Nono", "Niko", "Jean" };
+        //public List<string> ListS => new List<string> { "Nono", "Niko", "Jean" };
 
         public ListNameViewModel()
         {
@@ -335,7 +335,7 @@ namespace Names
                 PersonViewModel person = new PersonViewModel(new Person(NewName));
                 foreach (PersonViewModel pers in ListObservablePerson)
                 {
-                    if (pers.Name.Equals(NewName))
+                    if (pers.FirstName.Equals(NewName))
                     {
                         return;
                     }
@@ -374,7 +374,7 @@ namespace Names
 
                 foreach (PersonViewModel pers in ListObservablePerson)
                 {
-                    if (pers.Name.Equals(ValueSelected.Name))
+                    if (pers.FirstName.Equals(ValueSelected.FirstName))
                     {
                         ListObservablePerson.Remove(pers);
                         break;

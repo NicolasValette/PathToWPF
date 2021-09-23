@@ -8,11 +8,25 @@ namespace ListName
 {
     public class Person
     {
-        public string Name { get; set; }
+        // Nom de famille
+        public string LastName { get; set; }
+        //Prenom
+        public string FirstName { get; set; }
+        public DateTime BirthDate { get; set; }
 
-        public Person (String name)
+
+        public Person(string firstname, string lastname = "", DateTime birth = new DateTime())
         {
-            Name = name;
+            LastName = lastname;
+            FirstName = firstname;
+            BirthDate = birth;
+
+        }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName} né·e le {BirthDate.ToShortDateString()}";
+
         }
     }
 }
