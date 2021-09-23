@@ -1,2 +1,2 @@
 # PathToWPF
-Personnal project to learn .NET with WPF and MVVM
+Personnal project to learn .NET with WPF and MVVM.
