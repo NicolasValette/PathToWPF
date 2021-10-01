@@ -21,29 +21,29 @@ namespace ListName
             ListName.Add(p3);
         }
 
-        public void add(string name)
+        public void Add(string firstname, string lastname = "", DateTime birthdate = new DateTime())
         {
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(firstname))
             {
-                Person person = new Person(name);
+                Person person = new(firstname, lastname, birthdate);
                 foreach (Person pers in ListName)
                 {
-                    if (pers.Name.Equals(name))
+                    if (pers.FirstName.Equals(firstname) && pers.LastName.Equals(lastname) && pers.BirthDate.Equals(birthdate))
                     {
                         return;
                     }
-                    
+
                 }
                 ListName.Add(person);
             }
         }
 
-        public void remove(string name)
+        public void Remove(string firstname, string lastname = "", DateTime birthdate = new DateTime())
         {
-            Person p = new Person(name);
+            Person person = new(firstname, lastname, birthdate);
             foreach (Person pers in ListName)
             {
-                if (pers.Name.Equals(name))
+                if (pers.FirstName.Equals(firstname) && pers.LastName.Equals(lastname) && pers.BirthDate.Equals(birthdate))
                 {
                     ListName.Remove(pers);
                     break;
@@ -52,7 +52,7 @@ namespace ListName
             }
 
         }
-        public void removeAt(int index)
+        public void RemoveAt(int index)
         {
             if (ListName.Count > 0)
             {

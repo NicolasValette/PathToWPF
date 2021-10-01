@@ -88,9 +88,6 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
             <TextBox x:Name="txtName" Text="{Binding NewName, Mode=TwoWay}"/>
             <Button x:Name="btnAdd" Margin="0,5,0,0" Command="{Binding AddButtonCommand}" Content="{Binding ButtonLabel}">
-                <Button.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DoubleClickCommand}" />
-                </Button.InputBindings>
             </Button>
             <Button x:Name="btnDel" Margin="0,5,0,0" Command="{Binding DelButtonCommand}" Content="{Binding ButtonDelLabel}" />
             <Button x:Name="btnDe2" Margin="0,5,0,0" Command="{Binding DelIndButtonCommand}" Content="{Binding ButtonDelIndLabel}" />

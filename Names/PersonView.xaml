@@ -22,9 +22,10 @@
         <Label Grid.Column="0" Content="Prénom"/>
         <Label Grid.Column="0" Grid.Row="1" Content="Nom"/>
         <Label Grid.Column="0" Grid.Row="2" Content="Date de Naissance"/>
-        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding FirstName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  IsReadOnly="True" Width="120" HorizontalAlignment="Left"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LastName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  IsReadOnly="True" Width="120" HorizontalAlignment="Left"/>
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding FirstName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LastName}" Margin="5,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left"/>
         <DatePicker Grid.Column="1" Grid.Row="2" Margin="5,5,0,0" Width="120" SelectedDate="{Binding BirthDate}" HorizontalAlignment="Left"/>
-        <Button Grid.Row="3" Margin="5,5,5,5" Command="{Binding CloseCommand}" Content="Close" />
+        <Button Grid.Row="3" Grid.Column="0" Margin="5,5,5,5" Command="{Binding SaveCommand}" CommandParameter="true" Content="Save"/>
+        <Button Grid.Row="3" Grid.Column="1" Margin="5,5,5,5" Command="{Binding CloseCommand}" CommandParameter="false" Content="Close" IsCancel="True" IsDefault="True" />
     </Grid>
 </Window>
