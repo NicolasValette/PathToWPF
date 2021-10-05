@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ListName
 {
+    [XmlRootAttribute("People")]
     public class People
     {
         public List<Person> ListName { get; }
 
+       
         public People()
         {
-            ListName = new List<Person>();
+            ListName = new List<Person>();  
+        }
+        public void InitEx()
+        {
             Person p1 = new("Jean");
-            Person p2 = new("Niko");
-            Person p3 = new Person("Elayan", "Mitsuyo");
+            Person p2 = new("Niko", "Myoji");
+            Person p3 = new Person("Elayan", "Mitsuyo", new DateTime(2001, 12, 24));
             ListName.Add(p1);
             ListName.Add(p2);
             ListName.Add(p3);

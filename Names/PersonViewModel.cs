@@ -94,7 +94,7 @@ namespace Names
            
             if (applyChanges)
             {
-                MessageBox.Show("Edited");
+                _ = MessageBox.Show("Edited");
                 Person = editedPersonVM.Person;
                 FirstName = editedPersonVM.FirstName;
                 LastName = editedPersonVM.LastName;
@@ -103,7 +103,7 @@ namespace Names
             }
             else
             {
-                MessageBox.Show("Cancel");
+                _ = MessageBox.Show("Cancel");
                 editedPersonVM.Person = Person;
                 editedPersonVM.FirstName = FirstName;
                 editedPersonVM.LastName = LastName;
