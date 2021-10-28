@@ -76,7 +76,7 @@ namespace Names
         {
             personWindow = new PersonView();
             var clone = new PersonViewModel(new Person(Person.FirstName, Person.LastName, Person.BirthDate), SaveCallback, Index);
-            clone.CloseCallback = (isSaving, personVM) => EditFinished(isSaving, clone);
+            clone.CloseCallback = (isSaving, personVM) => EditFinished(isSaving, personVM);
             personWindow.DataContext = clone;
             //personWindow.DataContext = this;
             personWindow.ShowDialog();

@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace ListName
 {
-    [XmlRootAttribute("People")]
+    [XmlRoot("People")]
     public class People
     {
         public List<Person> ListName { get; }
