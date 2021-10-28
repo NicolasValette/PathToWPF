@@ -7,8 +7,10 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using ListName;
+using Microsoft.Win32;
 
 namespace Names
 {
@@ -16,19 +18,9 @@ namespace Names
     public class ListNameViewModel : INotifyPropertyChanged
     {
 
-        public People ListPerson = new People();
-        //public ObservableCollection<Person> ListObservablePerson = new ObservableCollection<Person>
-        //    {
-        //        new Person("Jean"),
-        //        new Person("Niko"),
-        //        new Person("Nono", "Mitsuyo", new DateTime(2000, 12, 24))
-        //    };
-        public ObservableCollection<PersonViewModel> ListObservablePerson = new ObservableCollection<PersonViewModel>
-            {
-                new PersonViewModel(new Person("Jean")),
-                new PersonViewModel(new Person("Niko", "Myoji")),
-                new PersonViewModel(new Person("Nono", "Mitsuyo", new DateTime(2000, 12, 24)))
-            };
+        public People ListPerson = new ();
+        public ObservableCollection<PersonViewModel> ListObservablePerson = new ();
+
 
         #region Properties
 
@@ -219,13 +211,7 @@ namespace Names
                 NotifyPropertyChanged();
             }
         }
-        //public ObservableCollection<Person> ListPersons
-        //{
-        //    get
-        //    {
-        //        return ListObservablePerson;
-        //    }
-        //}
+  
         public ObservableCollection<PersonViewModel> ListPersons
         {
             get
@@ -244,20 +230,16 @@ namespace Names
                     list.Add(t.Name.ToString());
                 }
                 return list;
-                //var list = new List<string>();
-                //foreach (System.Drawing.KnownColor c in Enum.GetValues(typeof(System.Drawing.KnownColor)))
-                //{
-                //    list.Add(c.ToString());
-                //}
-                //return list;
             }
         }
         #endregion
 
         #region Labels
-        public string ButtonLabel => "Add Name";
-        public string ButtonDelLabel => "Remove Name";
-        public string ButtonDelIndLabel => "Remove Name at Index";
+        public string ButtonLabel => "Add Person";
+        public string ButtonDelLabel => "Remove Person";
+        public string ButtonDelIndLabel => "Remove Person at Index";
+        public string ButtonSaveLabel => "Save";
+        public string ButtonLoadLabel => "Load";
         public string ButtonColorLabel1 => "Red";
         public string ButtonColorLabel2 => "Green";
         public string ButtonColorLabel3 => "Blue";
@@ -269,8 +251,9 @@ namespace Names
         public RelayCommand DelButtonCommand { get; }
         public RelayCommand DelIndButtonCommand { get; }
         public RelayCommand ChangeBackgroundColorCommand { get; }
-        //public RelayCommand DoubleClickCommand { get; }
-        
+        public RelayCommand SaveCommand { get; }
+        public RelayCommand LoadCommand { get; }
+
         #endregion
 
         // Pour refresh l'affichage de l'UI
@@ -280,8 +263,8 @@ namespace Names
         // The CallerMemberName attribute that is applied to the optional propertyName
         // parameter causes the property name of the caller to be substituted as an argument.
 
-        public List<Person> List => new List<Person> { new Person("Nono", "Mitsuyo", new DateTime(2000, 12, 24)), new Person("Niko"), new Person("Jean") };
-       //public List<string> ListS => new List<string> { "Nono", "Niko", "Jean" };
+       // public List<Person> List => new List<Person> { new Person("Nono", "Mitsuyo", new DateTime(2000, 12, 24)), new Person("Niko"), new Person("Jean") };
+    
 
         public ListNameViewModel()
         {
@@ -289,14 +272,33 @@ namespace Names
             DelButtonCommand = new RelayCommand(o => RemoveName());
             DelIndButtonCommand = new RelayCommand(o => RemoveNameIndex());
             ChangeBackgroundColorCommand = new RelayCommand(o => BrushColor = ChangeBackgroundColor.ChangeColor(o as string));
-            //DoubleClickCommand = new RelayCommand(o => OpenPersonWindow(o as Person));
+            SaveCommand = new RelayCommand(o => Save());
+            LoadCommand = new RelayCommand(o => Load());
+       
         }
 
+        public void Save()
+        {
+            SaveFileDialog s = new SaveFileDialog();
+            s.ShowDialog();
+            XMLSave.Save(s.FileName, ListPerson);
+        }
+        public void Load ()
+        {
+            OpenFileDialog s = new OpenFileDialog();
+            s.ShowDialog();
+            ListPerson = XMLSave.Load(s.FileName);
+            ListObservablePerson.Clear();
+            for (int i = 0; i < ListPerson.ListName.Count;i++)
+            {
+                var pers = ListPerson.ListName[i];
+                var pvm = new PersonViewModel(new Person(pers.FirstName, pers.LastName, pers.BirthDate), saveEditedPerson, i);
+                ListObservablePerson.Add(pvm);
+            }
+        }
         public void OpenPersonWindow(Person person)
         {
-            //MessageBox.Show("Hello !");
             PersonView personWindow = new PersonView();
-            personWindow.DataContext = new PersonViewModel(person);
             personWindow.ShowDialog();
         }
 
@@ -309,33 +311,24 @@ namespace Names
             }
         }
 
+        private void saveEditedPerson(PersonViewModel pm)
+        {
+            MessageBox.Show("Saved");
+            ListPerson.ListName[pm.Index] = pm.Person;
+        }
+
+
         #region List Methods
-        //public void AddName()
-        //{
-        //    ListPerson.Add(NewName);
-        //    if (!string.IsNullOrWhiteSpace(NewName))
-        //    {
-        //        Person person = new Person(NewName);
-        //        foreach (Person pers in ListObservablePerson)
-        //        {
-        //            if (pers.FirstName.Equals(NewName))
-        //            {
-        //                return;
-        //            }
-        //        }
-        //        ListObservablePerson.Add(person);
-        //    }
-        //    NewName = string.Empty;
-        //}
+
         public void AddName()
         {
             ListPerson.Add(NewName);
             if (!string.IsNullOrWhiteSpace(NewName))
             {
-                PersonViewModel person = new PersonViewModel(new Person(NewName));
+                PersonViewModel person = new PersonViewModel(new Person(NewName), saveEditedPerson, ListObservablePerson.Count);
                 foreach (PersonViewModel pers in ListObservablePerson)
                 {
-                    if (pers.Name.Equals(NewName))
+                    if (pers.FirstName.Equals(NewName))
                     {
                         return;
                     }
@@ -345,26 +338,6 @@ namespace Names
             NewName = string.Empty;
         }
 
-        //public void RemoveName()
-        //{
-        //    if (ValueSelected != null)
-        //    {
-        //        ListPerson.Remove(ValueSelected.FirstName);
-
-
-        //        foreach (Person pers in ListObservablePerson)
-        //        {
-        //            if (pers.FirstName.Equals(ValueSelected.FirstName))
-        //            {
-        //                ListObservablePerson.Remove(pers);
-        //                break;
-        //            }
-
-        //        }
-
-        //        ListObservablePerson.Remove(ValueSelected);
-        //    }
-        //}
         public void RemoveName()
         {
             if (ValueSelected != null)
@@ -374,7 +347,7 @@ namespace Names
 
                 foreach (PersonViewModel pers in ListObservablePerson)
                 {
-                    if (pers.Name.Equals(ValueSelected.Name))
+                    if (pers.FirstName.Equals(ValueSelected.FirstName))
                     {
                         ListObservablePerson.Remove(pers);
                         break;
